@@ -8,7 +8,7 @@ def create_index(csv_file,index_file):
     index = defaultdict(list)
     columns =["郵便番号","都道府県", "市区町村", "町域", "京都通り名", "字丁目", "事業所名", "事業所住所"]
 
-    with open(csv_file, encoding="utf-8") as file:
+    with open(csv_file, encoding="cp932") as file:
         reader = csv.DictReader(file)
         for id , row in enumerate(reader):
             for col in columns:
@@ -42,24 +42,17 @@ def search(csv_file, index_file, query):
             break
     
     if not mach_id:
-        return[]
+        return []
     
     results=[]
 
-    with open(csv_file,encoding="utf-8") as file:
+    with open(csv_file,encoding="cp932") as file:
         reader = csv.DictReader(file)
         for id , row in enumerate(reader):
             if id in mach_id:
-                results.append({
-                    "郵便番号": row["郵便番号"],
-                    "都道府県": row["都道府県"],
-                    "市区町村": row["市区町村"],
-                    "町域": row["町域"],
-                    "京都通り名": row["京都通り名"],
-                    "字丁目": row["字丁目"],
-                    "事業所名": row["事業所名"],
-                    "事業所住所": row["事業所住所"],
-                })
+                results.append(
+                    f"{row['郵便番号']} {row['都道府県']}{row['市区町村']}{row['町域']}{row['京都通り名']}{row['字丁目']} {row['事業所名']} {row['事業所住所']}"
+                )
     return results
 
 def main():
